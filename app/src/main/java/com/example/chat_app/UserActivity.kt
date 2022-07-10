@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chat_app.adapter.UserRecyclerAdapter
@@ -42,7 +43,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun displayUsers() {
-        val adapter = UserRecyclerAdapter(layoutInflater) {
+        adapter = UserRecyclerAdapter(layoutInflater) {
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("uid", it.uid)
             intent.putExtra("username", it.username)
@@ -82,6 +83,33 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.nav_menu, menu)
+        val search = menu.findItem(R.id.appSearchBar)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    if (newText.isEmpty()) {
+                        adapter.submitList(list)
+                    } else {
+                        val searchUsers: MutableList<User> = mutableListOf()
+                        searchUsers.clear()
+                        list.forEach {
+                            if (it.email.contains(newText)) {
+                                searchUsers.add(it)
+                            }
+                        }
+                        adapter.submitList(searchUsers)
+                    }
+                    return true
+                }
+                return false
+            }
+        })
         return super.onCreateOptionsMenu(menu)
     }
 }

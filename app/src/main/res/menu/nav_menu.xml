@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/appSearchBar"
+        android:title="@string/search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom|withText" />
     <item android:id="@+id/menuSightOut"
-        android:title="Sight out"
+        android:title="@string/sign_out"
+        android:titleCondensed="Sign Out"
         app:showAsAction="ifRoom"/>
 </menu>

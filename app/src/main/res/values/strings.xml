@@ -12,4 +12,6 @@
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_latest_messages">LatestMessagesActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="search">Search</string>
+    <string name="sign_out">Sign out</string>
 </resources>

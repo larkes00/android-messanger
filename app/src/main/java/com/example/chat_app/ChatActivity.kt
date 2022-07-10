@@ -1,10 +1,8 @@
 package com.example.chat_app
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,9 +47,9 @@ class ChatActivity : AppCompatActivity() {
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid
 
-        val messageAdapter = MessageRecyclerAdapter(layoutInflater, list)
+        adapter = MessageRecyclerAdapter(layoutInflater, list)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = messageAdapter
+        binding.recyclerView.adapter = adapter
 
         ref.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object : ValueEventListener {
@@ -62,7 +60,7 @@ class ChatActivity : AppCompatActivity() {
                         val message = it.getValue(Message::class.java)
                         list.add(message!!)
                     }
-                    messageAdapter.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -78,6 +76,7 @@ class ChatActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 ref.child("chats").child(receiverRoom!!).child("messages").push()
                     .setValue(message)
+                binding.enterMessage.setText("")
             }
             .addOnFailureListener {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
